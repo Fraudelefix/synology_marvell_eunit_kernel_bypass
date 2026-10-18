@@ -1,0 +1,16 @@
+0.3.0-scheduler-preview1 — host validation, 2026-10-18
+
+PASS: 105 module control-flow cases (ASan/UBSan); no hardware simulation claim
+PASS: 29 runner cases in temporary fake filesystem; no kernel calls
+      Includes 15 new scheduled-mode cases: internal mounted/assembled storage,
+      already-ready no-op, existing block refusal, absent/refused target,
+      armed/active pre-storage integration, failed service query, repeat attempt,
+      failed apply, wrong build, bad checksum, missing isolated-test opt-in.
+PASS: 8 existing pre-storage installer lifecycle cases
+PASS: 6 scheduler staging cases with real checksums and fake NAS filesystem
+PASS: shell syntax
+
+Total: 148 simulated scenarios. These do not validate DSM task timing, kernel
+concurrency on real hardware, or automatic assembly/mounting of the DX213 volume.
+Kernel module unchanged: c3288c6c55910364feb623d514b6dfdb006b684e32e29fd9f16419165c31cfc8
+Hardware test of this branch: pending.

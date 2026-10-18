@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0-scheduler-preview1 — experimental branch only
+
+- Add a separate root-filesystem installer and DSM Task Scheduler entry point.
+- Reuse the unchanged 0.2.2 kernel module with a late-detection runner mode.
+- Refuse armed/active pre-storage integration; retain the shared runner lock.
+- Inspect an already-ready target without reprobe; permit at most one scheduled
+  mutation attempt per boot, retaining the attempt marker after failure.
+- No automatic pool assembly or mounting: this remains a hardware experiment.
+- Add 15 scheduler runner cases and 6 staging tests. No hardware validation yet.
+
 ## 0.2.3 — 2026-10-18, publication préparée
 
 - Installateur : comparaison du contenu des identifiants de démarrage au lieu

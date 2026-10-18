@@ -1,5 +1,11 @@
 # Synology Marvell Eunit Kernel Bypass
 
+> **Branche expérimentale Planificateur DSM : 0.3.0-scheduler-preview1.**
+> Pour essayer cette variante, suivre [SCHEDULER.md](SCHEDULER.md), pas la procédure
+> d'installation pré-stockage ci-dessous. Détection tardive seulement ; montage
+> automatique du volume encore à valider sur le NAS. Le module reste en 0.2.2.
+> Les essais matériels décrits ci-dessous concernent la version pré-stockage.
+
 Contournement expérimental pour utiliser un **DX213 sur un DS920+ équipé du
 Marvell 88SE9235**, avec détection avant l'assemblage des groupes de stockage DSM.
 

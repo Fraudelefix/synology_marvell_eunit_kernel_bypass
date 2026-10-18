@@ -15,7 +15,7 @@ def case(mode, scenario, expected):
     global CASES
     with tempfile.TemporaryDirectory(prefix='dx213-runner-') as td:
         root = Path(td)
-        pkg = root / 'usr/local/lib/dx213-v2'
+        pkg = root / ('usr/local/lib/dx213-scheduler' if mode == 'scheduled' else 'usr/local/lib/dx213-v2')
         pkg.mkdir(parents=True)
         bindir = root / 'bin'; bindir.mkdir()
         def put(path, text):
@@ -37,7 +37,7 @@ def case(mode, scenario, expected):
         script = re.sub(r'(?<![A-Za-z0-9_/])/(?:usr/local/lib|proc|sys|run|sbin)(?=/)', lambda m: td+m[0], script)
         script = script.replace('PATH=/usr/sbin:/usr/bin:/sbin:/bin', f'PATH={bindir}:/usr/bin:/bin')
         (pkg/'run.sh').write_text(script)
-        (pkg/'boot.enabled').touch()
+        if mode != 'scheduled': (pkg/'boot.enabled').touch()
         def command(name, text):
             p = bindir/name; p.write_text('#!/bin/bash\n'+text); p.chmod(0o700)
         command('id', 'echo 0\n')
@@ -76,16 +76,27 @@ for k in flags_snapshot sstatus_snapshot pmp_unique device_class raw_ports pmp_l
         if scenario == 'disarmed': (pkg/'boot.enabled').unlink()
         if scenario == 'wrong-build': command('uname', 'echo different\n')
         if scenario == 'bad-checksum': command('sha256sum', 'exit 1\n')
+        if scenario == 'already-ready':
+            (host/'block').mkdir()
+            env['FAKE_STATE']='4'
+        if scenario == 'armed-prestorage': put('/usr/local/lib/dx213-v2/boot.enabled', '')
+        if scenario == 'service-query-failed': command('systemctl', 'exit 1\n')
+        if scenario == 'previous-attempt': (root/'run/dx213-scheduler-attempt').mkdir()
+        if scenario == 'apply-failed':
+            insmod.write_text(insmod.read_text().replace('state=3', 'exit 1'))
         args = ['bash', str(pkg/'run.sh'), mode]
-        if mode == 'probe' and scenario != 'no-auth': args += ['--isolated-test']
+        if mode in ('probe', 'scheduled') and scenario != 'no-auth': args += ['--isolated-test']
         result = subprocess.run(args, env=env, capture_output=True, text=True, timeout=5)
         assert (result.returncode == 0) == expected, (mode,scenario,result.stdout,result.stderr)
         actions = (root/'actions').read_text().splitlines() if (root/'actions').exists() else []
-        successful_probe = expected and mode in ('probe','boot') and scenario=='normal'
-        assert actions.count('1') == int(successful_probe), (mode,scenario,actions)
+        successful_probe = expected and mode in ('probe','boot','scheduled') and scenario in ('normal','mounted','assembled')
+        attempted = successful_probe or scenario == 'apply-failed'
+        assert actions.count('1') == int(attempted), (mode,scenario,actions)
         assert not (root/'run/dx213-v2.lock').exists()
-        assert not (root/'sys/module/dx213_boot').exists()
+        if scenario != 'apply-failed': assert not (root/'sys/module/dx213_boot').exists()
         assert (pkg/'connected-probe.ok').exists() == (successful_probe and mode=='probe')
+        if mode == 'scheduled':
+            assert (root/'run/dx213-scheduler-attempt').exists() == (attempted or scenario == 'previous-attempt')
         CASES += 1
 
 for args in [
@@ -95,5 +106,13 @@ for args in [
     ('boot','assembled',False),('boot','active-service',False),
     ('boot','disarmed',False),('probe','wrong-build',False),
     ('probe','bad-checksum',False),('probe','no-auth',False),
+    ('scheduled','normal',True),('scheduled','mounted',True),
+    ('scheduled','assembled',True),('scheduled','already-ready',True),
+    ('scheduled','existing-block',False),('scheduled','absent',True),
+    ('scheduled','refused',False),('scheduled','armed-prestorage',False),
+    ('scheduled','active-service',False),('scheduled','service-query-failed',False),
+    ('scheduled','previous-attempt',False),('scheduled','apply-failed',False),
+    ('scheduled','wrong-build',False),('scheduled','bad-checksum',False),
+    ('scheduled','no-auth',False),
 ]: case(*args)
 print(f'PASS: {CASES} runner cases in temporary fake filesystem; no kernel calls')

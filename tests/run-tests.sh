@@ -8,6 +8,7 @@ ${CC:-gcc} -std=gnu11 -Wall -Wextra -Werror -g \
 ASAN_OPTIONS=detect_leaks=0 "$tmp/test_module"
 python3 tests/test_runner.py
 python3 tests/test_install.py
-for file in run.sh install.sh boot.sh collect.sh tests/run-tests.sh; do bash -n "$file"; done
+python3 tests/test_scheduler_install.py
+for file in run.sh install.sh boot.sh scheduler.sh install-scheduler.sh collect.sh tests/run-tests.sh; do bash -n "$file"; done
 sh -n build.sh
 echo 'PASS: shell syntax'

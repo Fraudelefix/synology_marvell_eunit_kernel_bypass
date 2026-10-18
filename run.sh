@@ -5,10 +5,10 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 export PATH LC_ALL=C
 pkg=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 mode=${1:-inspect}
-case "$mode" in inspect|probe|boot) ;; *) echo 'Usage: run.sh inspect | probe --isolated-test | boot'; exit 2;; esac
+case "$mode" in inspect|probe|boot|scheduled) ;; *) echo 'Usage: run.sh inspect | probe --isolated-test | boot | scheduled --isolated-test'; exit 2;; esac
 [[ $(id -u) = 0 ]] || { echo 'Root required'; exit 1; }
-if [[ "$mode" = probe && ${2:-} != --isolated-test ]]; then
-    echo 'probe requires --isolated-test'; exit 1
+if [[ ( "$mode" = probe || "$mode" = scheduled ) && ${2:-} != --isolated-test ]]; then
+    echo "$mode requires --isolated-test"; exit 1
 fi
 cd "$pkg"
 sha256sum -c SHA256SUMS >/dev/null
@@ -46,6 +46,18 @@ if [[ "$mode" = inspect ]]; then
     exit 0
 fi
 
+if [[ "$mode" = scheduled ]]; then
+    [[ "$pkg" = /usr/local/lib/dx213-scheduler ]] || {
+        echo 'Scheduled mode requires its separate root-owned installation'; exit 1;
+    }
+    [[ ! -e /usr/local/lib/dx213-v2/boot.enabled ]] || {
+        echo 'REFUSED: pre-storage integration is still armed'; exit 1;
+    }
+    active=$(systemctl show dx213-prestorage.service -p ActiveState) || exit 1
+    case "$active" in ActiveState=inactive|ActiveState=failed) ;; *)
+        echo "REFUSED: pre-storage service $active"; exit 1;; esac
+fi
+
 if [[ "$mode" = boot ]]; then
     [[ "$pkg" = /usr/local/lib/dx213-v2 && -f "$pkg/boot.enabled" ]] || {
         echo 'Boot activation not armed in the installed path'; exit 1;
@@ -69,6 +81,13 @@ fi
 hostpath=/sys/devices/pci0000:00/0000:00:13.0/0000:01:00.0/ata6/host5
 [[ -d "$hostpath" ]] || { echo 'Expected eSATA host topology absent'; exit 1; }
 if [[ -n $(find "$hostpath" -type d -name block -print -quit) ]]; then
+    if [[ "$mode" = scheduled ]]; then
+        snapshot 0
+        if [[ "$state" = 4 && "$mask" != 0 ]]; then
+            echo 'ALREADY_READY: DX213 disk detected; no reprobe performed. Volume mounting is not verified.'
+            exit 0
+        fi
+    fi
     echo 'Target already exposes block devices: no reprobe permitted'; exit 1
 fi
 
@@ -84,6 +103,13 @@ while :; do
     esac
 done
 
+if [[ "$mode" = scheduled ]]; then
+    # Atomic, root-owned /run marker: at most one mutation attempt per boot.
+    # Never remove it on failure: a queued EH request can outlive this process.
+    mkdir /run/dx213-scheduler-attempt || {
+        echo 'REFUSED: scheduled reprobe already attempted this boot'; exit 1;
+    }
+fi
 snapshot 1
 [[ "$state" = 3 ]] || { echo 'No reprobe queued'; exit 1; }
 deadline=$((SECONDS+180))
@@ -97,6 +123,9 @@ while (( SECONDS < deadline )); do
             echo 'Driver ready but block-device publication not observed'; exit 1;
         }
         echo 'READY: DX213 data disk detected. Existing DSM assembly may proceed.'
+        if [[ "$mode" = scheduled ]]; then
+            echo 'DETECTION_ONLY: no assembly or mount requested; verify the existing pool in DSM.'
+        fi
         if [[ "$mode" = probe ]]; then
             cat /proc/sys/kernel/random/boot_id > "$pkg/connected-probe.ok"
         fi
