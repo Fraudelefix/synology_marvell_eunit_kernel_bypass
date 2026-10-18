@@ -1,0 +1,12 @@
+[Unit]
+Description=Experimental exact-build DX213 pre-storage detection
+After=systemd-udev-trigger.service
+Before=syno-space.service
+ConditionPathExists=/usr/local/lib/dx213-v2/boot.enabled
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/lib/dx213-v2/boot.sh
+TimeoutStartSec=240
+# No ExecStop: never restore flags or detach a mounted enclosure on shutdown.

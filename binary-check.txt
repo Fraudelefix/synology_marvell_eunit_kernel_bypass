@@ -1,0 +1,27 @@
+PASS: all 18 imports present in retained exact-firmware export table.
+
+String dump of section '.modinfo':
+  [     0]  description=Exact-build DS920+ DX213 connected pre-storage reprobe experiment
+  [    4e]  version=0.2.2-experimental
+  [    69]  license=GPL
+  [    75]  parm=state:1=absent 2=eligible 3=queued 4=ready 5=busy 6=refused
+  [    b6]  parm=action:0=snapshot; 1=clear flag and queue targeted reprobe
+  [    f6]  parmtype=disk_mask:uint
+  [   10e]  parmtype=device_class:uint
+  [   129]  parmtype=pmp_unique:uint
+  [   142]  parmtype=sstatus_snapshot:uint
+  [   161]  parmtype=flags_snapshot:uint
+  [   17e]  parmtype=state:int
+  [   191]  parmtype=isolated_test:bool
+  [   1ad]  parmtype=action:int
+  [   1c1]  parmtype=refusal_detail:uint
+  [   1de]  parmtype=pmp_emid:uint
+  [   1f5]  parmtype=pmp_device:uint
+  [   20e]  parmtype=pmp_vendor:uint
+  [   227]  parmtype=pmp_links_snapshot:uint
+  [   248]  parmtype=raw_ports:uint
+  [   260]  srcversion=7C18CFDA77F1AC466A19C35
+  [   288]  depends=
+  [   291]  retpoline=Y
+  [   29d]  vermagic=4.4.302+ SMP mod_unload 
+

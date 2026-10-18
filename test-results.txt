@@ -1,0 +1,5 @@
+PASS: 105 module control-flow cases; no hardware simulation claim
+PASS: 14 runner cases in temporary fake filesystem; no kernel calls
+PASS: 8 installer lifecycle cases; no start/reboot; temporary filesystem only
+PASS: shell syntax
+PASS: installer boot guard against real procfs, matching and mismatching proof.

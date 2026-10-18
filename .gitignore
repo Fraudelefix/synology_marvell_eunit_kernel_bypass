@@ -1,0 +1,16 @@
+# Build intermediates and private runtime evidence
+*.o
+*.mod.c
+.*.cmd
+Module.symvers
+modules.order
+.tmp_versions/
+__pycache__/
+*.pyc
+connected-probe.ok
+boot.enabled
+.dx213-v2-owned
+*.log
+# Reviewed compiler log is intentionally tracked
+!build-log.txt
+# dx213_boot.ko is intentionally tracked for this exact build

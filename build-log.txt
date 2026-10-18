@@ -1,0 +1,23 @@
+make: Entering directory '/tmp/dx213-build/linux-4.4.x'
+scripts/kconfig/conf  --olddefconfig Kconfig
+#
+# configuration written to .config
+#
+scripts/kconfig/conf  --silentoldconfig Kconfig
+  CHK     include/config/kernel.release
+  CHK     include/generated/uapi/linux/version.h
+  CHK     include/generated/utsrelease.h
+  CHK     include/generated/bounds.h
+  CHK     include/generated/timeconst.h
+  CHK     include/generated/asm-offsets.h
+  CALL    scripts/checksyscalls.sh
+  CHK     scripts/mod/devicetable-offsets.h
+make: Leaving directory '/tmp/dx213-build/linux-4.4.x'
+make: Entering directory '/tmp/dx213-build/linux-4.4.x'
+  CC [M]  <module-source>/dx213_boot.o
+  Building modules, stage 2.
+  MODPOST 1 modules
+  CC      <module-source>/dx213_boot.mod.o
+  LD [M]  <module-source>/dx213_boot.ko
+make: Leaving directory '/tmp/dx213-build/linux-4.4.x'
+Build complete. Review the result before regenerating package checksums.
