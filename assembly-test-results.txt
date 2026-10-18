@@ -1,0 +1,17 @@
+0.3.0-scheduler-preview2 — host validation, 2026-10-18
+
+Previous detection suite: 105 C module cases, 29 runner cases, 8 pre-storage
+installer cases, 6 scheduler installer cases: PASS. Shell syntax: PASS.
+
+Assembly suite: 15 unittest methods, including 18 separate refusal subcases.
+Uses minimal sanitized fields from observed DSM normal/missing inventories.
+Covers response parsing, API error rejection, exact JSON-string argument and
+force=false, identity/state refusal, healthy mounted no-op, single request,
+failure marker retention, repeat refusal, mount ancestry/read-only/internal-disk
+rejection, enrollment of mounted identity and refusal of overwrite/unmounted.
+PASS. No real NAS APIs or storage mutations performed by these tests.
+
+The local reassemble mutation, boot timing, post-assembly data integrity and
+long-term hardware stability remain UNVALIDATED. Normal inventory read via
+synowebapi and reassemble via DSM UI were observed on the user's test NAS.
+The prior sleep/wake internal-disk incident remains unresolved.

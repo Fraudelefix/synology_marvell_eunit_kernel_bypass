@@ -9,6 +9,9 @@ ASAN_OPTIONS=detect_leaks=0 "$tmp/test_module"
 python3 tests/test_runner.py
 python3 tests/test_install.py
 python3 tests/test_scheduler_install.py
+python3 tests/test_assembly.py
 for file in run.sh install.sh boot.sh scheduler.sh install-scheduler.sh collect.sh tests/run-tests.sh; do bash -n "$file"; done
 sh -n build.sh
+bash -n install-assembly.sh
+bash -n assembly/task.sh
 echo 'PASS: shell syntax'

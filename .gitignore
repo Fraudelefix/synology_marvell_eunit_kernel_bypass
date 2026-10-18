@@ -9,6 +9,7 @@ __pycache__/
 *.pyc
 connected-probe.ok
 boot.enabled
+target.json
 .dx213-v2-owned
 *.log
 # Reviewed compiler log is intentionally tracked

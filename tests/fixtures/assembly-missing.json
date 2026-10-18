@@ -1,0 +1,75 @@
+{
+  "disks": [
+    {
+      "id": "sata2",
+      "model": "WD30EZRX-00MMMB0",
+      "serial": "TEST-DX213-DISK",
+      "device": "/dev/sata2",
+      "container": {
+        "order": 1,
+        "str": "DX213-1",
+        "supportPwrBtnDisable": true,
+        "type": "ebox"
+      },
+      "slot_id": 1,
+      "has_system": false,
+      "status": "data_detected",
+      "action_status": {
+        "action_name": "idle",
+        "action_progress": ""
+      },
+      "is_erasing": false,
+      "smart_testing": false,
+      "used_by": "reuse_2"
+    }
+  ],
+  "storagePools": [],
+  "missing_pools": [
+    {
+      "uuid": "TESTPOOL-0000-0000-0000-000000000000",
+      "id": "reuse_2",
+      "disks": [
+        "sata2"
+      ],
+      "device_type": "shr_without_disk_protect",
+      "disk_failure_number": 0,
+      "missing_drives": [],
+      "cache_disks": [],
+      "raids": [
+        {
+          "designedDiskCount": 1,
+          "devices": [
+            {
+              "id": "sata2",
+              "loc": "1-1",
+              "slot": 0,
+              "status": "data_detected"
+            }
+          ],
+          "raidPath": "/dev/md3",
+          "status": "missing"
+        }
+      ],
+      "status": "missing",
+      "can_assemble": true,
+      "is_unassembled_pool": true,
+      "repair_action": "reassemble",
+      "volumes": [
+        "/volume2"
+      ]
+    }
+  ],
+  "volumes": [],
+  "detected_pools": [],
+  "env": {
+    "model_name": "DS920+",
+    "status": {
+      "root_size_byte": 8589869056,
+      "system_crashed": false,
+      "system_need_repair": false,
+      "system_rebuilding": false
+    },
+    "fs_acting": false,
+    "is_space_actioning": false
+  }
+}

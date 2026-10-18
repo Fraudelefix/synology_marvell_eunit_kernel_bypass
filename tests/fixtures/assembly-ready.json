@@ -1,0 +1,93 @@
+{
+  "disks": [
+    {
+      "id": "sata2",
+      "model": "WD30EZRX-00MMMB0",
+      "serial": "TEST-DX213-DISK",
+      "device": "/dev/sata2",
+      "container": {
+        "order": 1,
+        "str": "DX213-1",
+        "supportPwrBtnDisable": true,
+        "type": "ebox"
+      },
+      "slot_id": 1,
+      "has_system": false,
+      "status": "normal",
+      "action_status": {
+        "action_name": "idle",
+        "action_progress": ""
+      },
+      "is_erasing": false,
+      "smart_testing": false,
+      "used_by": "reuse_2"
+    }
+  ],
+  "storagePools": [
+    {
+      "uuid": "TESTPOOL-0000-0000-0000-000000000000",
+      "id": "reuse_2",
+      "disks": [
+        "sata2"
+      ],
+      "device_type": "shr_without_disk_protect",
+      "disk_failure_number": 0,
+      "missing_drives": [],
+      "cache_disks": [],
+      "raids": [
+        {
+          "designedDiskCount": 1,
+          "devices": [
+            {
+              "id": "sata2",
+              "slot": 0,
+              "status": "normal"
+            }
+          ],
+          "hasParity": false,
+          "minDevSize": "2994449694720",
+          "normalDevCount": 1,
+          "raidCrashedReason": 0,
+          "raidPath": "/dev/md3",
+          "raidStatus": 1,
+          "spares": []
+        }
+      ],
+      "status": "normal",
+      "is_writable": true,
+      "is_actioning": false,
+      "can_assemble": false,
+      "pool_child": [
+        {
+          "id": "volume_2",
+          "size": {
+            "total": "2989297238016"
+          }
+        }
+      ]
+    }
+  ],
+  "missing_pools": [],
+  "volumes": [
+    {
+      "uuid": "TESTVOLUME-0000-0000-000000000000",
+      "pool_path": "reuse_2",
+      "vol_path": "/volume2",
+      "status": "normal",
+      "is_writable": true,
+      "is_encrypted": false
+    }
+  ],
+  "detected_pools": [],
+  "env": {
+    "model_name": "DS920+",
+    "status": {
+      "root_size_byte": 8589869056,
+      "system_crashed": false,
+      "system_need_repair": false,
+      "system_rebuilding": false
+    },
+    "fs_acting": false,
+    "is_space_actioning": false
+  }
+}

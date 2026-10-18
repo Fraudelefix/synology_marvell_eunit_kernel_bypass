@@ -1,5 +1,10 @@
 # Expérience : Planificateur de tâches DSM
 
+**Mise à jour après essais :** la détection seule fonctionne, mais DSM ne remonte
+pas spontanément le groupe dans les deux essais observés. Le complément
+[preview2 / assemblage ciblé](ASSEMBLY.md) ajoute cette étape, sans modifier
+l'installation de détection. Sa validation matérielle est encore à effectuer.
+
 Version de branche : **0.3.0-scheduler-preview1**. Module inchangé : **0.2.2**.
 Cette variante est testée par simulation uniquement, pas encore sur le NAS.
 `main` conserve l'intégration pré-stockage déjà essayée sur le matériel.

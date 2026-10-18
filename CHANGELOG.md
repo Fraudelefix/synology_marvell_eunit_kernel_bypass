@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0-scheduler-preview2 — separate assembly helper
+
+- Preserve the installed detection package and kernel module unchanged.
+- Add a separately installed, locally enrolled single-disk DX213 assembly helper.
+- Use the observed DSM reassemble API with exact pool UUID and force=false.
+- Verify inventory identity, admissible state, eSATA topology and mount ancestry.
+- Add sanitized fixtures from observed normal/missing DSM inventories and tests.
+- Hardware validation of local reassembly pending; sleep/wake incident unresolved.
+
 ## 0.3.0-scheduler-preview1 — experimental branch only
 
 - Add a separate root-filesystem installer and DSM Task Scheduler entry point.

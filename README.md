@@ -1,5 +1,10 @@
 # Synology Marvell Eunit Kernel Bypass
 
+> **Complément preview2 : assemblage ciblé depuis le Planificateur.**
+> Voir [ASSEMBLY.md](ASSEMBLY.md). La détection seule a réussi sur le NAS, mais
+> le groupe reste hors ligne après un redémarrage propre. Ce complément utilise
+> l'opération DSM d'assemblage en ligne ; son exécution locale reste à valider.
+
 > **Branche expérimentale Planificateur DSM : 0.3.0-scheduler-preview1.**
 > Pour essayer cette variante, suivre [SCHEDULER.md](SCHEDULER.md), pas la procédure
 > d'installation pré-stockage ci-dessous. Détection tardive seulement ; montage
